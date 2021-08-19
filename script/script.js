@@ -73,12 +73,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     togleMenu();
 
+    // popup
     const togglePopup = () => {
         const popup = document.querySelector('.popup'),
             popupContent = document.querySelector('.popup-content'),
-            popupClose = document.querySelector('.popup-close'),
             popupBtn = document.querySelectorAll('.popup-btn');
-
 
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
@@ -97,26 +96,41 @@ window.addEventListener('DOMContentLoaded', () => {
                             popupContent.style.top = topStyle + '%';
                             popupContent.style.opacity = opasityStyle;
                         } else {
-                            // clearInterval(popupInterval);
                             cancelAnimationFrame(popupInterval);
                         }
                     };
                     popupGo();
-
-                    // const popupInterval = setInterval(popupGo, 1);
-
                 }
+
+                const closePopup = (e) => {
+                    if (e.target.className === 'popup' || e.target.className === 'popup-close') {
+                        popup.style.display = 'none';
+                        document.removeEventListener('click', closePopup);
+                    }
+                };
+                document.addEventListener('click', e => closePopup(e));
             });
 
-
         });
-
-        popupClose.addEventListener('click', () => popup.style.display = 'none');
-
     };
-
     togglePopup();
 
-
+    // scroll button
+    const scrollBtn = () => {
+        const links = document.querySelectorAll('a');
+        links.forEach((element) => {
+            const id = element.hash;
+            if (element.hash[0] === '#' && element.hash !== '#close') {
+                element.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    document.querySelector(id).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            }
+        });
+    };
+    scrollBtn();
 });
 
