@@ -1,13 +1,14 @@
+/* eslint-disable arrow-parens */
 window.addEventListener('DOMContentLoaded', () => {
-    'use strict';
+    'strict';
 
     // Timer
-    function countTimer(deadline) {
+    const countTimer = deadline => {
         const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
 
-        function getTimeRemaning() {
+        const getTimeRemaning = () => {
             const dateStop = new Date(deadline).getTime(),
                 dateNow = new Date().getTime(),
                 timeRemaining = (dateStop - dateNow) / 1000,
@@ -20,9 +21,9 @@ window.addEventListener('DOMContentLoaded', () => {
             timerSeconds.textContent = seconds;
 
             return timeRemaining;
-        }
+        };
 
-        function updateClock() {
+        const updateClock = () => {
             const timer = getTimeRemaning();
             let interval;
             if (timer > 0) {
@@ -34,17 +35,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
             }
-        }
+        };
         updateClock();
-    }
-
+    };
 
     // get timer +1 Day
-    function addDays(date, days) {
+    const addDays = (date, days) => {
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
-    }
+    };
     // if new client set localStorage timer
     if (localStorage.startTimer === undefined) {
         localStorage.startTimer = addDays(new Date(), 1);
@@ -52,6 +52,42 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
         countTimer(localStorage.startTimer);
     }
+
+    //Menu
+    const togleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+            btnClose = document.querySelector('.close-btn'),
+            menu = document.querySelector('menu'),
+            menuItems = menu.querySelectorAll('ul>li');
+
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        };
+
+        btnMenu.addEventListener('click', handlerMenu);
+        btnClose.addEventListener('click', handlerMenu);
+        menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+
+
+    };
+
+    togleMenu();
+
+    const togglePopup = () => {
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn');
+
+        popupBtn.forEach((elem) => {
+            elem.addEventListener('click', () => {
+                popup.style.display = 'block';
+            });
+        });
+
+
+    };
+
+    togglePopup();
+
 
 });
 
