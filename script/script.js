@@ -58,14 +58,14 @@ window.addEventListener('DOMContentLoaded', () => {
         const btnMenu = document.querySelector('.menu'),
             btnClose = document.querySelector('.close-btn'),
             menu = document.querySelector('menu'),
-            menuItems = menu.querySelectorAll('ul>li');
+            menuItems = menu.querySelectorAll('ul>li>a');
 
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
         };
 
         btnMenu.addEventListener('click', handlerMenu);
-        btnClose.addEventListener('click', handlerMenu);
+        btnClose.addEventListener('click', (e) => {e.preventDefault(); handlerMenu()} );
         menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
 
 
