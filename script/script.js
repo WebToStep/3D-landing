@@ -55,15 +55,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Menu
     const togleMenu = () => {
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu');
+        const menu = document.querySelector('menu');
 
-        btnMenu.addEventListener('click', () => menu.classList.toggle('active-menu'));
         document.addEventListener('click', (event) => {
-            let target = event.target;
-            target = target.closest('a');
-            if (menu.className === 'active-menu' && target) {
+            const target = event.target;
+            if (menu.className === 'active-menu' && target.closest('a')) {
                 event.preventDefault();
+                menu.classList.toggle('active-menu');
+            } else if (menu.className !== 'active-menu' && target.closest('.menu')) {
+                menu.classList.toggle('active-menu');
+            } else if (menu.className === 'active-menu' && !target.closest('menu')) {
                 menu.classList.toggle('active-menu');
             }
         });
