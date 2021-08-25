@@ -250,4 +250,50 @@ window.addEventListener('DOMContentLoaded', () => {
         startSlide(3000);
     };
     slider();
+    // command
+    const command = () => {
+        const comandBlock = document.getElementById('command');
+
+        const photoChenge = event => {
+            if (!event.target.matches('.command__photo')) return;
+            else {
+                if (event.target.getAttribute('src') === event.target.dataset.img) {
+                    event.target.setAttribute('src', event.target.dataset.img.replace(/a\.jpg/, '.jpg'));
+                } else event.target.src = event.target.dataset.img;
+            }
+        };
+
+        comandBlock.addEventListener("mouseover", photoChenge);
+        comandBlock.addEventListener("mouseout", photoChenge);
+    };
+    command();
+    // inputsHandler
+    const inputsHandler = () => {
+        const inputs = document.querySelectorAll("input");
+
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => {
+                input.value = input.value.replace(/ +/g, ' ').trim();
+                input.value = input.value.replace(/-+/g, '-');
+                input.value = input.value.replace(/^-+/g, '');
+                input.value = input.value.replace(/-+$/g, '');
+                input.value = input.value.replace(/^ +$/g, '');
+                input.value = input.value.replace(/ +$/g, '');
+                if (input.classList.contains('calc-item')) {
+                    input.value = input.value.replace(/[^1-9]/g, '');
+                } else if (input.getAttribute('type') === 'email') {
+                    input.value = input.value.replace(/[^A-z@-_.!~']/ig, '');
+                } else if (input.getAttribute('type') === 'tel') {
+                    input.value = input.value.replace(/[^0-9()-]/g, '');
+                } else if (input.getAttribute('placeholder') === 'Ваше имя') {
+                    input.value = input.value.replace(/([А-я]+) ([А-я]+)/ig, (match, val1, val2) =>
+                        val1[0].toUpperCase() +
+                     val1.slice(1).toLowerCase() + ' ' +
+                     val2[0].toUpperCase() +
+                     val2.slice(1).toLowerCase());
+                }
+            });
+        });
+    };
+    inputsHandler();
 });
