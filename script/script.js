@@ -173,13 +173,14 @@ window.addEventListener('DOMContentLoaded', () => {
             interval;
         const addDots = () => {
             slide.forEach(() => {
-                const dot = document.createElement('li');
-                dot.classList.add('dot');
-                dots.append(dot);
+                const newDot = document.createElement('li');
+                newDot.classList.add('dot');
+                dots.append(newDot);
             });
         };
         addDots();
         const dot = document.querySelectorAll('.dot');
+        dot[0].classList.add('dot-active');
 
         const prevSlide = (el, index, strClass) => {
             el[index].classList.remove(strClass);
