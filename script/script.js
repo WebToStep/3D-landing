@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 /* eslint-disable arrow-parens */
 window.addEventListener('DOMContentLoaded', () => {
     'strict';
@@ -280,9 +281,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 input.value = input.value.replace(/^ +$/g, '');
                 input.value = input.value.replace(/ +$/g, '');
                 if (input.classList.contains('calc-item')) {
-                    input.value = input.value.replace(/[^1-9]/g, '');
+                    input.value = input.value.replace(/[^0-9]/g, '');
                 } else if (input.getAttribute('type') === 'email') {
-                    input.value = input.value.replace(/[^A-z@-_.!~']/ig, '');
+                    input.value = input.value.replace(/[^\w@-_.!~']/ig, '');
                 } else if (input.getAttribute('type') === 'tel') {
                     input.value = input.value.replace(/[^0-9()-]/g, '');
                 } else if (input.getAttribute('placeholder') === 'Ваше имя') {
@@ -303,29 +304,39 @@ window.addEventListener('DOMContentLoaded', () => {
             calcSquare = document.querySelector('.calc-square'),
             calcDay = document.querySelector('.calc-day'),
             calcCount = document.querySelector('.calc-count'),
-            totalValue = document.querySelector('.calc-total');
+            totalValue = document.getElementById('total');
 
         const countSum = () => {
-            let total = 0;
-            let typeValue = calcType.getAttribute('value');
-            console.log('typeValue: ', typeValue);
-            let squareValue;
+            let total = 0,
+                dayValue = 1,
+                countValue = 1;
+            const typeValue = calcType.options[calcType.selectedIndex].value,
+                squareValue = +calcSquare.value;
+
+            if (calcCount.value > 1) {
+                countValue += (calcCount.value - 1) / 10;
+            }
+
+            if (calcDay.value && calcDay.value < 5) {
+                dayValue *= 2;
+            } else if (calcDay.value && calcDay.value < 10) {
+                dayValue *= 1.5;
+            }
+
+            if (typeValue && squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
 
 
-
-
-            totalValue.textContent = total;
+            totalValue.textContent = Math.floor(total);
         };
-        countSum();
 
         calcBlock.addEventListener('change', (event) => {
             const target = event.target;
-
             if (target.matches('select') || target.matches('input')) {
-                console.log('ku');
+                countSum();
             }
         });
-
     };
     calc(100);
 });
