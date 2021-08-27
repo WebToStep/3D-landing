@@ -322,13 +322,29 @@ window.addEventListener('DOMContentLoaded', () => {
             } else if (calcDay.value && calcDay.value < 10) {
                 dayValue *= 1.5;
             }
+            
+            
+            const totalRunNumbers = (num) => {
+                let n = +totalValue.textContent;
+                const interval = setInterval(() => {
+                    if (n < num) {
+                        n += 20;
+                    }
+                    if (n > num) {
+                        n -= 20;
+                    }
+                    if (n === num) {
+                        clearInterval(interval);
+                    }
+                    totalValue.textContent = n;
+                }, Math.round(100 / (num / 20)));
+            };
 
             if (typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
+                totalRunNumbers(total);
             }
-
-
-            totalValue.textContent = Math.floor(total);
+            
         };
 
         calcBlock.addEventListener('change', (event) => {
