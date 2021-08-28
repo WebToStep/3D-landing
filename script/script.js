@@ -289,9 +289,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 } else if (input.getAttribute('placeholder') === 'Ваше имя') {
                     input.value = input.value.replace(/([А-я]+) ([А-я]+)/ig, (match, val1, val2) =>
                         val1[0].toUpperCase() +
-                     val1.slice(1).toLowerCase() + ' ' +
-                     val2[0].toUpperCase() +
-                     val2.slice(1).toLowerCase());
+                        val1.slice(1).toLowerCase() + ' ' +
+                        val2[0].toUpperCase() +
+                        val2.slice(1).toLowerCase());
                 }
             });
         });
@@ -322,29 +322,31 @@ window.addEventListener('DOMContentLoaded', () => {
             } else if (calcDay.value && calcDay.value < 10) {
                 dayValue *= 1.5;
             }
-            
-            
+
+
             const totalRunNumbers = (num) => {
-                let n = +totalValue.textContent;
+                let n = 0;
                 const interval = setInterval(() => {
                     if (n < num) {
-                        n += 20;
-                    }
-                    if (n > num) {
-                        n -= 20;
+                        n += num / 100;
+                        if (n > num) {
+                            totalValue.textContent = Math.round(num);
+                            clearInterval(interval);
+                        }
                     }
                     if (n === num) {
+                        totalValue.textContent = Math.round(num);
                         clearInterval(interval);
                     }
-                    totalValue.textContent = n;
-                }, Math.round(100 / (num / 20)));
+                    totalValue.textContent = Math.round(n);
+                }, 1);
             };
 
             if (typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
                 totalRunNumbers(total);
             }
-            
+
         };
 
         calcBlock.addEventListener('change', (event) => {
