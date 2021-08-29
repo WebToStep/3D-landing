@@ -52,27 +52,29 @@ class Validator {
         }
     }
     showError(error) {
+        let timer;
         error.classList.remove('success');
         error.classList.add('error');
-        if (error.nextElementSibling && error.nextElementSibling.classList.contains('validator-error')) {
-            return;
-        }
         const errorDiv = document.createElement('div');
         errorDiv.textContent = 'Ошибка в поле ' + error.placeholder.toLowerCase();
         errorDiv.classList.add('validator-error');
-        if (document.body.contains(errorDiv)) {
-            console.log('ku');
-        }
-        const timer = setTimeout(() => {
-            document.body.append(errorDiv);
-            errorDiv.classList.add('active');
-            setTimeout(() => {
-                errorDiv.classList.add('hide');
+
+        if (!document.body.querySelector('.validator-error')) {
+            timer = setTimeout(() => {
+                document.body.append(errorDiv);
+                errorDiv.classList.add('active');
                 setTimeout(() => {
-                    errorDiv.remove();
-                }, 4000);
-            }, 3000);
-        }, 10);
+                    errorDiv.classList.add('hide');
+                    setTimeout(() => {
+                        errorDiv.remove();
+                    }, 4000);
+                }, 3000);
+            }, 10);
+        } else {
+            document.body.querySelector('.validator-error').remove();
+            clearTimeout(timer);
+            this.showError(error);
+        }
     }
     showSuccess(success) {
         success.classList.remove('error');
