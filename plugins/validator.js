@@ -60,8 +60,8 @@ class Validator {
         errorDiv.classList.add('validator-error');
 
         if (!document.body.querySelector('.validator-error')) {
+            document.body.append(errorDiv);
             timer = setTimeout(() => {
-                document.body.append(errorDiv);
                 errorDiv.classList.add('active');
                 setTimeout(() => {
                     errorDiv.classList.add('hide');

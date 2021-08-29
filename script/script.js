@@ -363,8 +363,8 @@ window.addEventListener('DOMContentLoaded', () => {
         selector: '#form1',
         pattern: {
             name: /[А-я]/,
-            email: /[\w@-_.!~']/,
-            phone: /[0-9()-]/,
+            email: /[\w\s\S]+@[\w\s\S]+\..{2,}/,
+            phone: /[0-9()-]{9}/,
         },
         method: {
             'form1-name': [
