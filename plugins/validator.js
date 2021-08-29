@@ -50,7 +50,6 @@ class Validator {
             this.showError(target);
             this.error.add(target);
         }
-      //   console.log(this.error);
     }
     showError(error) {
         error.classList.remove('success');
@@ -59,9 +58,21 @@ class Validator {
             return;
         }
         const errorDiv = document.createElement('div');
-        errorDiv.textContent = 'Ошибка в этом поле';
+        errorDiv.textContent = 'Ошибка в поле ' + error.placeholder.toLowerCase();
         errorDiv.classList.add('validator-error');
-        error.insertAdjacentElement('afterend', errorDiv);
+        if (document.body.contains(errorDiv)) {
+            console.log('ku');
+        }
+        const timer = setTimeout(() => {
+            document.body.append(errorDiv);
+            errorDiv.classList.add('active');
+            setTimeout(() => {
+                errorDiv.classList.add('hide');
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 4000);
+            }, 3000);
+        }, 10);
     }
     showSuccess(success) {
         success.classList.remove('error');
@@ -81,17 +92,33 @@ class Validator {
          background: #ffd1d1 !important;
       }
       .validator-error{
+        position:fixed !important;
+        right: 20px !important;
+        bottom: 20px !important;
          background: #fff;
          padding:5px 10px;
-         width: 150px;
+         width: 200px;
+         height: 50px;
          margin: 0px auto;
          text-align: center; 
-         vertical-align: center;    
-         border-radius: 5px;
+         border-radius: 0 2px 2px 0;
+         border-left: 3px solid #af4c4c;
          font-size:12px;
          fontFamily: sans-serif;
          color:#af4c4c; 
-      }`;
+         background: #ffd1d1 !important;
+         opacity: 1 !important;
+         transform: translateY(150%) !important;
+         transition: 1s transform, opacity 4s;
+        }
+        .validator-error.active{
+          transform: translateY(0) !important;
+        display:unset;
+      }
+      .validator-error.hide{
+        opacity: 0 !important;
+      display:unset;
+    }`;
         document.head.appendChild(style);
     }
     setPattern() {
