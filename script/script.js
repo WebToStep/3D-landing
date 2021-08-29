@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable arrow-parens */
 window.addEventListener('DOMContentLoaded', () => {
@@ -269,34 +270,34 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     command();
     // inputsHandler
-    const inputsHandler = () => {
-        const inputs = document.querySelectorAll("input");
+    // const inputsHandler = () => {
+    //     const inputs = document.querySelectorAll("input");
 
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => {
-                input.value = input.value.replace(/ +/g, ' ').trim();
-                input.value = input.value.replace(/-+/g, '-');
-                input.value = input.value.replace(/^-+/g, '');
-                input.value = input.value.replace(/-+$/g, '');
-                input.value = input.value.replace(/^ +$/g, '');
-                input.value = input.value.replace(/ +$/g, '');
-                if (input.classList.contains('calc-item')) {
-                    input.value = input.value.replace(/[^0-9]/g, '');
-                } else if (input.getAttribute('type') === 'email') {
-                    input.value = input.value.replace(/[^\w@-_.!~']/ig, '');
-                } else if (input.getAttribute('type') === 'tel') {
-                    input.value = input.value.replace(/[^0-9()-]/g, '');
-                } else if (input.getAttribute('placeholder') === 'Ваше имя') {
-                    input.value = input.value.replace(/([А-я]+) ([А-я]+)/ig, (match, val1, val2) =>
-                        val1[0].toUpperCase() +
-                        val1.slice(1).toLowerCase() + ' ' +
-                        val2[0].toUpperCase() +
-                        val2.slice(1).toLowerCase());
-                }
-            });
-        });
-    };
-    inputsHandler();
+    //     inputs.forEach(input => {
+    //         input.addEventListener('blur', () => {
+    //             input.value = input.value.replace(/ +/g, ' ').trim();
+    //             input.value = input.value.replace(/-+/g, '-');
+    //             input.value = input.value.replace(/^-+/g, '');
+    //             input.value = input.value.replace(/-+$/g, '');
+    //             input.value = input.value.replace(/^ +$/g, '');
+    //             input.value = input.value.replace(/ +$/g, '');
+    //             if (input.classList.contains('calc-item')) {
+    //                 input.value = input.value.replace(/[^0-9]/g, '');
+    //             } else if (input.getAttribute('type') === 'email') {
+    //                 input.value = input.value.replace(/[^\w@-_.!~']/ig, '');
+    //             } else if (input.getAttribute('type') === 'tel') {
+    //                 input.value = input.value.replace(/[^0-9()-]/g, '');
+    //             } else if (input.getAttribute('placeholder') === 'Ваше имя') {
+    //                 input.value = input.value.replace(/([А-я]+) ([А-я]+)/ig, (match, val1, val2) =>
+    //                     val1[0].toUpperCase() +
+    //                     val1.slice(1).toLowerCase() + ' ' +
+    //                     val2[0].toUpperCase() +
+    //                     val2.slice(1).toLowerCase());
+    //             }
+    //         });
+    //     });
+    // };
+    // inputsHandler();
     // calculator
     const calc = (price = 100) => {
         const calcBlock = document.querySelector('.calc-block'),
@@ -357,4 +358,57 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     calc(100);
+    // validators
+    const validForm1 = new Validator({
+        selector: '#form1',
+        pattern: {
+            name: /[А-я]/,
+            email: /[\w@-_.!~']/,
+            phone: /[0-9()-]/,
+        },
+        method: {
+            'form1-name': [
+                ['notEmpty'],
+                ['pattern', 'name']
+            ],
+            'form1-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form1-email': [
+                ['notEmpty'],
+                ['pattern', 'email']
+            ]
+        }
+    });
+    validForm1.init();
+    const validForm2 = new Validator({
+        selector: '#form2',
+        pattern: {
+            name: /[А-я]/,
+            email: /[\w\s\S]+@[\w\s\S]+\..{2,}/,
+            phone: /[0-9()-]{9}/,
+            text: /[\w\s\S]+/,
+        },
+        method: {
+            'form2-name': [
+                ['notEmpty'],
+                ['pattern', 'name']
+            ],
+            'form2-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form2-email': [
+                ['notEmpty'],
+                ['pattern', 'email']
+            ],
+            'form2-message': [
+                ['notEmpty'],
+                ['pattern', 'text']
+            ]
+        }
+    });
+    validForm2.init();
+    maskPhone('.form-phone');
 });
