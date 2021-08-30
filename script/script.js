@@ -362,9 +362,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const validForm1 = new Validator({
         selector: '#form1',
         pattern: {
-            name: /[А-я]/,
-            email: /[\w\s\S]+@[\w\s\S]+\..{2,}/,
-            phone: /[0-9()-]{9}/,
+            name: /[а-я ]/ig,
+            email: /[\w\s\S@]/ig,
+            phone: /[0-9+]/ig,
         },
         method: {
             'form1-name': [
@@ -385,10 +385,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const validForm2 = new Validator({
         selector: '#form2',
         pattern: {
-            name: /[А-я]/,
-            email: /[\w\s\S]+@[\w\s\S]+\..{2,}/,
-            phone: /[0-9()-]{9}/,
-            text: /[\w\s\S]+/,
+            name: /[а-я ]/ig,
+            email: /[\w\s\S@]/ig,
+            phone: /[0-9+]/ig,
+            text: /[\w\s\S-.?!)(,:]/ig,
         },
         method: {
             'form2-name': [
@@ -410,5 +410,74 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
     validForm2.init();
-    maskPhone('.form-phone');
+    const validForm3 = new Validator({
+        selector: '#form3',
+        pattern: {
+            name: /[а-я ]/ig,
+            email: /[\w\s\S@]/ig,
+            phone: /[0-9+]/ig,
+        },
+        method: {
+            'form3-name': [
+                ['notEmpty'],
+                ['pattern', 'name']
+            ],
+            'form3-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form3-email': [
+                ['notEmpty'],
+                ['pattern', 'email']
+            ],
+        }
+    });
+    validForm3.init();
+    // maskPhone('.form-phone');
+    // send-ajax-form 
+    const sendForm = () => {
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) return;
+                if (request.status === 200) outputData();
+                else errorData(request.status);
+            });
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'aplication/json');
+            request.send(JSON.stringify(body));
+        };
+
+        const forms = document.querySelectorAll('form');
+        forms.forEach(item => {
+            item.addEventListener('submit', (event) => {
+                const statusMessage = document.createElement('div');
+                statusMessage.style.cssText = `font-size: 2rem;
+                                               color: #fff !important;`;
+                const errorMessage = 'Что то пошло не так...',
+                    loadMessage = 'Загрузка...',
+                    successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+                event.preventDefault();
+                item.append(statusMessage);
+                statusMessage.textContent = loadMessage;
+                const formData = new FormData(item);
+                const body = {};
+                formData.forEach((val, key) => body[key] = val);
+                postData(
+                    body,
+                    () => {
+                        event.target.querySelectorAll('input').forEach(elem => elem.value = '');
+                        statusMessage.textContent = successMessage;
+                    },
+                    (error) => {
+                        statusMessage.textContent = errorMessage;
+                        console.error(error);
+                    });
+            });
+        });
+
+
+    };
+    sendForm();
 });

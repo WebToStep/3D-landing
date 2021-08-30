@@ -11,13 +11,7 @@ class Validator {
     init() {
         this.applyStyle();
         this.setPattern();
-        this.elementsForm.forEach(elem => elem.addEventListener('change', this.checkIt.bind(this)));
-        this.form.addEventListener('submit', e => {
-            this.elementsForm.forEach(elem => this.checkIt({ target: elem }));
-            if (this.error.size) {
-                e.preventDefault();
-            }
-        });
+        this.elementsForm.forEach(elem => elem.addEventListener('input', this.checkIt.bind(this)));
     }
     isValid(elem) {
         const validatorMethod = {
@@ -47,6 +41,7 @@ class Validator {
             this.showSuccess(target);
             this.error.delete(target);
         } else {
+            target.value = '';
             this.showError(target);
             this.error.add(target);
         }
@@ -112,6 +107,7 @@ class Validator {
          opacity: 1 !important;
          transform: translateY(150%) !important;
          transition: 1s transform, opacity 4s;
+         z-index:1000;
         }
         .validator-error.active{
           transform: translateY(0) !important;
