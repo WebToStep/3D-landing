@@ -24,7 +24,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
             return timeRemaining;
         };
-
         const updateClock = () => {
             const timer = getTimeRemaning();
             let interval;
@@ -40,7 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
         };
         updateClock();
     };
-
     // get timer +1 Day
     const addDays = (date, days) => {
         const result = new Date(date);
@@ -54,7 +52,6 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
         countTimer(localStorage.startTimer);
     }
-
     //Menu
     const togleMenu = () => {
         const menu = document.querySelector('menu');
@@ -71,9 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-
     togleMenu();
-
     // popup
     const togglePopup = () => {
         const popup = document.querySelector('.popup'),
@@ -115,7 +110,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     togglePopup();
-
     // scroll button
     const scrollBtn = () => {
         const links = document.querySelectorAll('a');
@@ -160,9 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
-
         });
-
     };
     tabs();
     // slider
@@ -269,35 +261,6 @@ window.addEventListener('DOMContentLoaded', () => {
         comandBlock.addEventListener("mouseout", photoChenge);
     };
     command();
-    // inputsHandler
-    // const inputsHandler = () => {
-    //     const inputs = document.querySelectorAll("input");
-
-    //     inputs.forEach(input => {
-    //         input.addEventListener('blur', () => {
-    //             input.value = input.value.replace(/ +/g, ' ').trim();
-    //             input.value = input.value.replace(/-+/g, '-');
-    //             input.value = input.value.replace(/^-+/g, '');
-    //             input.value = input.value.replace(/-+$/g, '');
-    //             input.value = input.value.replace(/^ +$/g, '');
-    //             input.value = input.value.replace(/ +$/g, '');
-    //             if (input.classList.contains('calc-item')) {
-    //                 input.value = input.value.replace(/[^0-9]/g, '');
-    //             } else if (input.getAttribute('type') === 'email') {
-    //                 input.value = input.value.replace(/[^\w@-_.!~']/ig, '');
-    //             } else if (input.getAttribute('type') === 'tel') {
-    //                 input.value = input.value.replace(/[^0-9()-]/g, '');
-    //             } else if (input.getAttribute('placeholder') === 'Ваше имя') {
-    //                 input.value = input.value.replace(/([А-я]+) ([А-я]+)/ig, (match, val1, val2) =>
-    //                     val1[0].toUpperCase() +
-    //                     val1.slice(1).toLowerCase() + ' ' +
-    //                     val2[0].toUpperCase() +
-    //                     val2.slice(1).toLowerCase());
-    //             }
-    //         });
-    //     });
-    // };
-    // inputsHandler();
     // calculator
     const calc = (price = 100) => {
         const calcBlock = document.querySelector('.calc-block'),
@@ -436,6 +399,10 @@ window.addEventListener('DOMContentLoaded', () => {
     // maskPhone('.form-phone');
     // send-ajax-form 
     const sendForm = () => {
+        // const style2 = document.createElement('style');
+        // style2.textContent = ``;
+        // document.head.appendChild(style2);
+
         const postData = (body, outputData, errorData) => {
             const request = new XMLHttpRequest();
             request.addEventListener('readystatechange', () => {
@@ -455,12 +422,27 @@ window.addEventListener('DOMContentLoaded', () => {
                 statusMessage.style.cssText = `font-size: 2rem;
                                                color: #fff !important;`;
                 const errorMessage = 'Что то пошло не так...',
-                    loadMessage = 'Загрузка...',
-                    successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+                    successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
+                    loader = document.createElement('section');
+                loader.innerHTML = `<div class='sk-circle-bounce'>
+                                        <div class='sk-child sk-circle-1'></div>
+                                        <div class='sk-child sk-circle-2'></div>
+                                        <div class='sk-child sk-circle-3'></div>
+                                        <div class='sk-child sk-circle-4'></div>
+                                        <div class='sk-child sk-circle-5'></div>
+                                        <div class='sk-child sk-circle-6'></div>
+                                        <div class='sk-child sk-circle-7'></div>
+                                        <div class='sk-child sk-circle-8'></div>
+                                        <div class='sk-child sk-circle-9'></div>
+                                        <div class='sk-child sk-circle-10'></div>
+                                        <div class='sk-child sk-circle-11'></div>
+                                        <div class='sk-child sk-circle-12'></div>
+                                    </div>`;
 
                 event.preventDefault();
                 item.append(statusMessage);
-                statusMessage.textContent = loadMessage;
+                statusMessage.append(loader);
+                // statusMessage.textContent = loadMessage;
                 const formData = new FormData(item);
                 const body = {};
                 formData.forEach((val, key) => body[key] = val);
@@ -476,8 +458,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     });
             });
         });
-
-
     };
     sendForm();
 });
