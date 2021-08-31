@@ -1,17 +1,27 @@
 /* eslint-disable no-unused-vars */
 class Validator {
-    constructor({ selector, pattern = {}, method }) {
+    constructor({ selector, pattern = {}, method, errorMessage }) {
         this.form = document.querySelector(selector);
         this.pattern = pattern;
         this.method = method;
         this.elementsForm = [...this.form.elements].filter(item => item.tagName.toLowerCase() !== 'button' &&
             item.type !== 'button');
-        this.error = new Set();
+        this.errorMessage = errorMessage;
     }
     init() {
         this.applyStyle();
         this.setPattern();
-        this.elementsForm.forEach(elem => elem.addEventListener('input', this.checkIt.bind(this)));
+        this.elementsForm.forEach(elem => {
+            elem.addEventListener('input', this.checkIt.bind(this));
+            elem.addEventListener('blur', () => {
+                if (elem.getAttribute('id').includes('name')) {
+                    if (elem.value.length === 1) {
+                        elem.value = '';
+                        this.showError(elem, this.errorMessage);
+                    }
+                }
+            });
+        });
     }
     isValid(elem) {
         const validatorMethod = {
@@ -37,23 +47,21 @@ class Validator {
     }
     checkIt(event) {
         const target = event.target;
-        if (this.isValid(target)) {
-            this.showSuccess(target);
-            this.error.delete(target);
-        } else {
+        if (!this.isValid(target)) {
             target.value = '';
-            this.showError(target);
-            this.error.add(target);
+            this.showError(target, this.errorMessage);
+        } else if (this.isValid(target)) {
+            this.showSuccess(target);
         }
     }
-    showError(error) {
+    showError(error, message) {
         let timer;
         error.classList.remove('success');
         error.classList.add('error');
         const errorDiv = document.createElement('div');
-        errorDiv.textContent = 'Ошибка в поле ' + error.placeholder.toLowerCase();
+        if (message)errorDiv.textContent = message[error.id];
+        else errorDiv.textContent = 'Ошибка в поле' + error.placeholder.toLowerCase();
         errorDiv.classList.add('validator-error');
-
         if (!document.body.querySelector('.validator-error')) {
             document.body.append(errorDiv);
             timer = setTimeout(() => {
@@ -68,7 +76,7 @@ class Validator {
         } else {
             document.body.querySelector('.validator-error').remove();
             clearTimeout(timer);
-            this.showError(error);
+            this.showError(error, this.errorMessage);
         }
     }
     showSuccess(success) {
@@ -95,7 +103,7 @@ class Validator {
          background: #fff;
          padding:5px 10px;
          width: 200px;
-         height: 50px;
+         min-height: 50px;
          margin: 0px auto;
          text-align: center; 
          border-radius: 0 2px 2px 0;

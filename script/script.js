@@ -342,6 +342,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 ['notEmpty'],
                 ['pattern', 'email']
             ]
+        },
+        errorMessage: {
+            'form1-name': 'Имя должно быть более 2х символов, Русского алфавита',
+            'form1-phone': 'Телефон может содержать только цифры и знак +',
+            'form1-email': 'Имя должно быть более 2х символов, Русского алфавита',
         }
     });
     validForm1.init();
@@ -399,10 +404,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // maskPhone('.form-phone');
     // send-ajax-form 
     const sendForm = () => {
-        // const style2 = document.createElement('style');
-        // style2.textContent = ``;
-        // document.head.appendChild(style2);
-
         const postData = (body, outputData, errorData) => {
             const request = new XMLHttpRequest();
             request.addEventListener('readystatechange', () => {
@@ -438,11 +439,10 @@ window.addEventListener('DOMContentLoaded', () => {
                                         <div class='sk-child sk-circle-11'></div>
                                         <div class='sk-child sk-circle-12'></div>
                                     </div>`;
-
                 event.preventDefault();
                 item.append(statusMessage);
                 statusMessage.append(loader);
-                // statusMessage.textContent = loadMessage;
+
                 const formData = new FormData(item);
                 const body = {};
                 formData.forEach((val, key) => body[key] = val);
@@ -456,6 +456,8 @@ window.addEventListener('DOMContentLoaded', () => {
                         statusMessage.textContent = errorMessage;
                         console.error(error);
                     });
+                item.querySelectorAll('input').forEach(elem => elem.classList.remove('success'));
+                setTimeout(() => statusMessage.remove(), 5000);
             });
         });
     };
