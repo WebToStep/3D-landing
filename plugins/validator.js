@@ -11,7 +11,17 @@ class Validator {
     init() {
         this.applyStyle();
         this.setPattern();
-        this.elementsForm.forEach(elem => elem.addEventListener('input', this.checkIt.bind(this)));
+        this.elementsForm.forEach(elem => {
+            elem.addEventListener('input', this.checkIt.bind(this));
+            elem.addEventListener('blur', () => {
+                if (elem.getAttribute('id').includes('name')) {
+                    if (elem.value.length === 1) {
+                        elem.value = '';
+                        this.showError(elem, this.errorMessage);
+                    }
+                }
+            });
+        });
     }
     isValid(elem) {
         const validatorMethod = {
@@ -37,13 +47,11 @@ class Validator {
     }
     checkIt(event) {
         const target = event.target;
-        if (this.isValid(target)) {
-            this.showSuccess(target);
-            this.error.delete(target);
-        } else {
+        if (!this.isValid(target)) {
             target.value = '';
             this.showError(target);
-            this.error.add(target);
+        } else if (this.isValid(target)) {
+            this.showSuccess(target);
         }
     }
     showError(error) {

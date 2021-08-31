@@ -474,6 +474,8 @@ window.addEventListener('DOMContentLoaded', () => {
                         statusMessage.textContent = errorMessage;
                         console.error(error);
                     });
+                item.querySelectorAll('input').forEach(elem => elem.classList.remove('success'));
+                setTimeout(() => statusMessage.remove(), 5000);
             });
         });
 
