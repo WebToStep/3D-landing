@@ -402,19 +402,27 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     validForm3.init();
     // maskPhone('.form-phone');
+
     // send-ajax-form 
     const sendForm = () => {
-        const postData = (body, outputData, errorData) => {
+
+        const postData = (body) => new Promise((resolve, reject) => {
+
             const request = new XMLHttpRequest();
             request.addEventListener('readystatechange', () => {
                 if (request.readyState !== 4) return;
-                if (request.status === 200) outputData();
-                else errorData(request.status);
+                if (request.status === 200) {
+                    resolve();
+                    // outputData();
+                } else {
+                    reject(); 
+                    // errorData(request.status);
+                }
             });
             request.open('POST', './server.php');
             request.setRequestHeader('Content-Type', 'aplication/json');
             request.send(JSON.stringify(body));
-        };
+        });
 
         const forms = document.querySelectorAll('form');
         forms.forEach(item => {
@@ -426,19 +434,19 @@ window.addEventListener('DOMContentLoaded', () => {
                     successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
                     loader = document.createElement('section');
                 loader.innerHTML = `<div class='sk-circle-bounce'>
-                                        <div class='sk-child sk-circle-1'></div>
-                                        <div class='sk-child sk-circle-2'></div>
-                                        <div class='sk-child sk-circle-3'></div>
-                                        <div class='sk-child sk-circle-4'></div>
-                                        <div class='sk-child sk-circle-5'></div>
-                                        <div class='sk-child sk-circle-6'></div>
-                                        <div class='sk-child sk-circle-7'></div>
-                                        <div class='sk-child sk-circle-8'></div>
-                                        <div class='sk-child sk-circle-9'></div>
-                                        <div class='sk-child sk-circle-10'></div>
-                                        <div class='sk-child sk-circle-11'></div>
-                                        <div class='sk-child sk-circle-12'></div>
-                                    </div>`;
+                                            <div class='sk-child sk-circle-1'></div>
+                                            <div class='sk-child sk-circle-2'></div>
+                                            <div class='sk-child sk-circle-3'></div>
+                                            <div class='sk-child sk-circle-4'></div>
+                                            <div class='sk-child sk-circle-5'></div>
+                                            <div class='sk-child sk-circle-6'></div>
+                                            <div class='sk-child sk-circle-7'></div>
+                                            <div class='sk-child sk-circle-8'></div>
+                                            <div class='sk-child sk-circle-9'></div>
+                                            <div class='sk-child sk-circle-10'></div>
+                                            <div class='sk-child sk-circle-11'></div>
+                                            <div class='sk-child sk-circle-12'></div>
+                                        </div>`;
                 event.preventDefault();
                 item.append(statusMessage);
                 statusMessage.append(loader);
@@ -446,16 +454,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 const formData = new FormData(item);
                 const body = {};
                 formData.forEach((val, key) => body[key] = val);
-                postData(
-                    body,
-                    () => {
+                postData(body)
+                    .then(() => {
                         event.target.querySelectorAll('input').forEach(elem => elem.value = '');
                         statusMessage.textContent = successMessage;
-                    },
-                    (error) => {
-                        statusMessage.textContent = errorMessage;
-                        console.error(error);
-                    });
+                    }).catch(
+                        (error) => {
+                            statusMessage.textContent = errorMessage;
+                            console.error(error);
+                        });
+
                 item.querySelectorAll('input').forEach(elem => elem.classList.remove('success'));
                 setTimeout(() => statusMessage.remove(), 5000);
             });
