@@ -405,25 +405,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // send-ajax-form 
     const sendForm = () => {
-
-        const postData = (body) => new Promise((resolve, reject) => {
-
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) return;
-                if (request.status === 200) {
-                    resolve();
-                    // outputData();
-                } else {
-                    reject(); 
-                    // errorData(request.status);
-                }
-            });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'aplication/json');
-            request.send(JSON.stringify(body));
+        const postData = (body) => fetch('./server.php', {
+            method: 'POST', //так же get, delete итд
+            // mode: 'same-origin', //Внутри домена
+            // mode: 'cors', //Разрешено на другие сайты
+            // credentials: 'same-origin', //так же может быть cors \\разрешение на передачу учетных данных
+            // redirect:  // если на сервере есть редирект тообщяем промису как действовать
+            // 'follow', //переадресовывать
+            // 'error' //прерывать
+            // referrer: 'client', //сообщяем от кого пришел запросов
+            // credentials: 'include', // проверка подлиности cookies с сервера
+            headers: { //Заголовки в основном используются только для POST запросов
+                'Content-Type': 'aplication/json'
+            },
+            body: JSON.stringify(body)
         });
-
+        
         const forms = document.querySelectorAll('form');
         forms.forEach(item => {
             item.addEventListener('submit', (event) => {
@@ -455,15 +452,17 @@ window.addEventListener('DOMContentLoaded', () => {
                 const body = {};
                 formData.forEach((val, key) => body[key] = val);
                 postData(body)
-                    .then(() => {
-                        event.target.querySelectorAll('input').forEach(elem => elem.value = '');
+                    .then(response => {
+                        if (response.status !== 200) {
+                            throw new Error(response.status);
+                        }
                         statusMessage.textContent = successMessage;
-                    }).catch(
-                        (error) => {
-                            statusMessage.textContent = errorMessage;
-                            console.error(error);
-                        });
-
+                    }).catch(error => {
+                        statusMessage.textContent = errorMessage;
+                        console.error(error);
+                    });
+                        
+                event.target.querySelectorAll('input').forEach(elem => elem.value = '');
                 item.querySelectorAll('input').forEach(elem => elem.classList.remove('success'));
                 setTimeout(() => statusMessage.remove(), 5000);
             });
