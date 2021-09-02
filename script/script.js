@@ -405,21 +405,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // send-ajax-form 
     const sendForm = () => {
-        const postData = (body) => fetch('./server.php', {
-            method: 'POST', //так же get, delete итд
-            // mode: 'same-origin', //Внутри домена
-            // mode: 'cors', //Разрешено на другие сайты
-            // credentials: 'same-origin', //так же может быть cors \\разрешение на передачу учетных данных
-            // redirect:  // если на сервере есть редирект тообщяем промису как действовать
-            // 'follow', //переадресовывать
-            // 'error' //прерывать
-            // referrer: 'client', //сообщяем от кого пришел запросов
-            // credentials: 'include', // проверка подлиности cookies с сервера
-            headers: { //Заголовки в основном используются только для POST запросов
-                'Content-Type': 'aplication/json'
-            },
-            body: JSON.stringify(body)
-        });
+        const postData = async (body) => {
+            const response = await fetch('./server.php', {
+                method: 'POST', 
+                headers: { 'Content-Type': 'aplication/json' },
+                body: JSON.stringify(body)
+            });
+            if (response.status !== 200) {
+                throw new Error(response.status);
+            }
+            return response;
+        };
         
         const forms = document.querySelectorAll('form');
         forms.forEach(item => {
@@ -427,6 +423,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 const statusMessage = document.createElement('div');
                 statusMessage.style.cssText = `font-size: 2rem;
                                                color: #fff !important;`;
+
                 const errorMessage = 'Что то пошло не так...',
                     successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
                     loader = document.createElement('section');
@@ -451,11 +448,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 const formData = new FormData(item);
                 const body = {};
                 formData.forEach((val, key) => body[key] = val);
+
                 postData(body)
-                    .then(response => {
-                        if (response.status !== 200) {
-                            throw new Error(response.status);
-                        }
+                    .then(() => {
                         statusMessage.textContent = successMessage;
                     }).catch(error => {
                         statusMessage.textContent = errorMessage;
