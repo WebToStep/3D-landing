@@ -1,0 +1,24 @@
+{
+  "name": "3d-landing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebToStep/3D-landing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WebToStep/3D-landing/issues"
+  },
+  "homepage": "https://github.com/WebToStep/3D-landing#readme",
+  "devDependencies": {
+    "webpack": "^5.51.2",
+    "webpack-cli": "^4.8.0"
+  }
+}

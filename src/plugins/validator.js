@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-class Validator {
+export class Validator {
     constructor({ selector, pattern = {}, method, errorMessage }) {
         this.form = document.querySelector(selector);
         this.pattern = pattern;
