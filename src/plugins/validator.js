@@ -22,7 +22,6 @@ export class Validator {
                 }
                 if (elem.getAttribute('id').includes('email')) {
                     if (!elem.value.match(/^\w+@\w+\.\w{2,}$/ig)) {
-                        console.log('elem: ', elem);
                         elem.value = '';
                         this.showError(elem, this.errorMessage);
                     }

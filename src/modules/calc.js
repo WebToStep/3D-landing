@@ -49,10 +49,24 @@ const calc = (price = 100) => {
 
     };
 
+    const numberHandler = value => {
+        if (!isNaN(parseFloat(value)) && isFinite(value)) return true;
+        else return false;
+    };
+
     calcBlock.addEventListener('change', event => {
         const target = event.target;
         if (target.matches('select') || target.matches('input')) {
             countSum();
+        }
+    });
+
+    calcBlock.addEventListener('input', event => {
+        const target = event.target;
+        if (target.matches('input')) {
+            if (!numberHandler(target.value)) {
+                target.value = '';
+            }
         }
     });
 };
