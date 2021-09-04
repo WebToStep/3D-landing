@@ -24,7 +24,7 @@ const validForm1 = new Validator({
     errorMessage: {
         'form1-name': 'Имя должно быть более 2х символов, Русского алфавита',
         'form1-phone': 'Телефон может содержать только цифры и знак +',
-        'form1-email': 'Имя должно быть более 2х символов, Русского алфавита',
+        'form1-email': 'email должен содержать знак @ и название домена(.ru, .com и тд.)',
     }
 });
 const validForm2 = new Validator({
@@ -52,6 +52,11 @@ const validForm2 = new Validator({
             ['notEmpty'],
             ['pattern', 'text']
         ]
+    },
+    errorMessage: {
+        'form1-name': 'Имя должно быть более 2х символов, Русского алфавита',
+        'form1-phone': 'Телефон может содержать только цифры и знак +',
+        'form1-email': 'email должен содержать знак @ и название домена(.ru, .com и тд.)',
     }
 });
 const validForm3 = new Validator({
@@ -74,6 +79,11 @@ const validForm3 = new Validator({
             ['notEmpty'],
             ['pattern', 'email']
         ],
+    },
+    errorMessage: {
+        'form1-name': 'Имя должно быть более 2х символов, Русского алфавита',
+        'form1-phone': 'Телефон может содержать только цифры и знак +',
+        'form1-email': 'email должен содержать знак @ и название домена(.ru, .com и тд.)',
     }
 });
 export { validForm1, validForm2, validForm3 };

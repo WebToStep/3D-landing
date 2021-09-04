@@ -8,14 +8,10 @@ module.exports = {
     },
     mode: 'development',
     devServer: {
-        // static: './dist',
-        static: {
-            directory: __dirname,
-            watch: true,
-        },
         open: true,
         port: 8080,
         hot: true,
+        writeToDisk: true,
     },
     module: {
         rules: [
@@ -33,3 +29,4 @@ module.exports = {
         ]
     }
 };
+// npm run dev

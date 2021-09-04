@@ -20,6 +20,13 @@ export class Validator {
                         this.showError(elem, this.errorMessage);
                     }
                 }
+                if (elem.getAttribute('id').includes('email')) {
+                    if (!elem.value.match(/^\w+@\w+\.\w{2,}$/ig)) {
+                        console.log('elem: ', elem);
+                        elem.value = '';
+                        this.showError(elem, this.errorMessage);
+                    }
+                }
             });
         });
     }
@@ -129,10 +136,10 @@ export class Validator {
     }
     setPattern() {
         if (!this.pattern.phone) {
-            this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
+            this.pattern.phone = /^\+?[78]([-()]*\d){10}$/ig;
         }
         if (!this.pattern.email) {
-            this.pattern.email = /^\w+@\w+\.\w{2,}$/;
+            this.pattern.email = /^\w+@\w+\.\w{2,}$/ig;
         }
     }
 }
