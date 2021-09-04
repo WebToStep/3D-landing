@@ -39,6 +39,8 @@ validForm2.init();
 validForm3.init();
 
 // maskPhone('.form-phone');
+console.log('hello world');
 
 // send-ajax-form
 sendForm();
+
